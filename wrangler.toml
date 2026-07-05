@@ -1,5 +1,8 @@
 name = "edesigrs-monster"
 compatibility_date = "2026-06-08"
+main = "src/worker.ts"
 
 [assets]
 directory = "./dist"
+binding = "ASSETS"
+run_worker_first = true
