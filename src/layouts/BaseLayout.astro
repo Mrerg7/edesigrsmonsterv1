@@ -48,7 +48,12 @@ const structuredData = {
       description:
         'The definitive premium domain for electronic designers, generative artists, AI art platforms, and creative studios. Available for acquisition.',
       url: SITE.url,
-      image: OG_IMAGE,
+      image: {
+        '@type': 'ImageObject',
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+      },
       category: 'Premium Domain Name',
       brand: {
         '@type': 'Brand',
@@ -64,6 +69,13 @@ const structuredData = {
           '@type': 'Organization',
           name: SITE.name,
           email: SITE.email,
+          url: SITE.url,
+          logo: {
+            '@type': 'ImageObject',
+            url: OG_IMAGE,
+            width: 1200,
+            height: 630,
+          },
         },
         shippingDetails: {
           '@type': 'OfferShippingDetails',
@@ -123,6 +135,12 @@ const structuredData = {
       name: SITE.name,
       url: SITE.url,
       email: SITE.email,
+      logo: {
+        '@type': 'ImageObject',
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+      },
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Phoenix',
