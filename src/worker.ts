@@ -27,7 +27,15 @@ function canonicalRedirect(request: Request): Response | null {
     return null;
   }
 
-  return Response.redirect(url.toString(), 301);
+  return new Response(null, {
+    status: 301,
+    headers: {
+      Location: url.toString(),
+      'Cache-Control': 'public, max-age=86400',
+      'X-Robots-Tag': 'noindex',
+      'Link': `<${url.toString()}>; rel="canonical"`,
+    },
+  });
 }
 
 export default {

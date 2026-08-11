@@ -1,8 +1,8 @@
 /
   Link: <https://edesigrs.monster/>; rel="canonical"
-
-/index.html
-  X-Robots-Tag: noindex
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
 
 /404.html
   X-Robots-Tag: noindex
