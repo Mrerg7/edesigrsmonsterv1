@@ -1,0 +1,97 @@
+---
+---
+
+<div
+  id="exit-intent"
+  class="fixed inset-0 z-[80] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="exit-title"
+>
+  <div class="relative w-full max-w-md rounded-3xl border border-white/15 bg-[var(--color-ink-soft)] p-6 sm:p-8 shadow-2xl">
+    <button
+      type="button"
+      id="exit-close"
+      class="absolute top-3 right-3 min-h-12 min-w-12 rounded-xl border border-white/10 hover:bg-white/5"
+      aria-label="Close offer dialog"
+    >✕</button>
+    <p class="text-xs uppercase tracking-[0.18em] text-[var(--color-accent)] font-bold mb-3">Limited listing offer</p>
+    <h2 id="exit-title" class="font-display text-2xl tracking-tight text-white mb-2">
+      Get a private buyer brief
+    </h2>
+    <p class="text-zinc-400 text-sm mb-5">
+      Leave your email for transfer logistics, escrow options, and a time-limited acquisition note on eDesigrs.monster.
+    </p>
+    <form id="exit-form" class="space-y-3">
+      <label class="block text-sm">
+        <span class="sr-only">Email</span>
+        <input
+          type="email"
+          name="email"
+          required
+          autocomplete="email"
+          placeholder="you@company.com"
+          class="w-full min-h-12 rounded-2xl border border-white/15 bg-black/30 px-4 text-base text-white placeholder:text-zinc-500"
+        />
+      </label>
+      <button type="submit" class="btn-accent w-full">Send me the brief</button>
+      <p id="exit-status" class="text-xs text-zinc-500 min-h-4" aria-live="polite"></p>
+    </form>
+  </div>
+</div>
+
+<script>
+  const KEY = 'edesigrs-exit-seen';
+  const dialog = document.getElementById('exit-intent');
+  const closeBtn = document.getElementById('exit-close');
+  const form = document.getElementById('exit-form') as HTMLFormElement | null;
+  const status = document.getElementById('exit-status');
+
+  function openDialog() {
+    if (!dialog || localStorage.getItem(KEY)) return;
+    dialog.classList.remove('hidden');
+    dialog.classList.add('flex');
+    localStorage.setItem(KEY, '1');
+  }
+
+  function closeDialog() {
+    dialog?.classList.add('hidden');
+    dialog?.classList.remove('flex');
+  }
+
+  document.addEventListener('mouseout', (event) => {
+    const e = event as MouseEvent;
+    if (e.clientY <= 0) openDialog();
+  });
+
+  // Mobile fallback: show once after dwell time if unused.
+  window.setTimeout(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) openDialog();
+  }, 45000);
+
+  closeBtn?.addEventListener('click', closeDialog);
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) closeDialog();
+  });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const email = String(data.get('email') || '');
+    if (status) status.textContent = 'Sending…';
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, intent: 'exit-offer', source: 'exit-intent' }),
+      });
+      if (!res.ok) throw new Error('failed');
+      if (status) status.textContent = 'Thanks — check your inbox within 24 hours.';
+      form.reset();
+      window.setTimeout(closeDialog, 1400);
+    } catch {
+      // Mailto fallback when Worker API is unavailable in pure static preview.
+      window.location.href = `mailto:sales@desertrich.com?subject=${encodeURIComponent('Buyer brief request')}&body=${encodeURIComponent(`Please send the private buyer brief.\n\nEmail: ${email}`)}`;
+    }
+  });
+</script>

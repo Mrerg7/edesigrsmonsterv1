@@ -1,51 +1,62 @@
 ---
-import { ACQUISITION_MAILTO } from '../config/site';
+import { ACQUISITION_MAILTO, OFFER_MAILTO, AGENT_MAILTO, SITE } from '../config/site';
 ---
 
-<section class="pt-20 pb-16 md:pt-24 md:pb-20 border-b border-white/10 creative-grid">
-  <div class="max-w-5xl mx-auto px-6 text-center">
-    <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-3xl bg-white/5 border border-white/10 mb-6">
-      <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-      <span class="text-xs font-medium tracking-[1.5px] text-emerald-400">PREMIUM DOMAIN • STRATEGIC ACQUISITION</span>
+<section class="relative pt-24 pb-14 md:pt-28 md:pb-20 border-b border-white/10 creative-grid overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[42rem] h-[42rem] rounded-full bg-[var(--color-accent)]/10 blur-3xl"></div>
+  </div>
+
+  <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
+    <div class="fade-up inline-flex items-center gap-2 px-4 min-h-10 rounded-full bg-white/5 border border-white/10 mb-6">
+      <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" aria-hidden="true"></span>
+      <span class="text-xs font-semibold tracking-[0.14em] text-emerald-400 uppercase">Premium domain · Available now</span>
     </div>
 
-    <h1 class="font-display text-[2.25rem] sm:text-[3.25rem] md:text-[4.75rem] leading-[0.95] tracking-[-0.055em] mb-4">
-      <span class="text-white">eDesigrs</span><span class="monster-text">.monster</span>
+    <h1 class="fade-up-delay font-display text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] leading-[0.92] tracking-[-0.05em] mb-5">
+      <span class="text-white">{SITE.brand}</span><span class="monster-text">{SITE.tld}</span>
     </h1>
 
-    <p class="max-w-2xl mx-auto text-xl sm:text-2xl md:text-3xl font-medium tracking-tight text-zinc-300 mb-8">
-      The definitive domain for<br class="hidden md:block" />electronic designers &amp; AI creatives.
+    <p class="fade-up-delay-2 max-w-2xl mx-auto text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-zinc-300 mb-6">
+      The definitive domain for electronic designers &amp; AI creatives.
     </p>
 
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-      <a
-        href={ACQUISITION_MAILTO}
-        class="group w-full sm:w-auto inline-flex items-center justify-center gap-x-3 px-9 py-4 text-lg font-semibold rounded-3xl bg-white text-zinc-950 hover:bg-zinc-100 active:scale-[0.985] transition-all shadow-xl shadow-black/20"
-      >
-        <span>Acquire for $125,000</span>
-        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-      </a>
-      <a
-        href="#why"
-        class="w-full sm:w-auto inline-flex items-center justify-center gap-x-2 px-8 py-4 text-lg font-medium rounded-3xl border border-white/20 hover:bg-white/5 transition-all"
-      >
-        <span>Explore the opportunity</span>
-      </a>
+    <div class="fade-up-delay-2 flex flex-col items-center gap-3 mb-8">
+      <p class="text-sm uppercase tracking-[0.18em] text-zinc-500">Listed price</p>
+      <p class="font-display text-4xl sm:text-5xl text-white tracking-tight">{SITE.priceDisplay}</p>
+      <p class="text-sm text-zinc-400" id="viewer-count" aria-live="polite">Live inquiries open · Escrow protected</p>
     </div>
 
-    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-500">
-      <div class="flex items-center gap-x-2">
-        <i class="fa-solid fa-check text-emerald-400"></i>
-        <span>Instant brand recognition</span>
-      </div>
-      <div class="flex items-center gap-x-2">
-        <i class="fa-solid fa-check text-emerald-400"></i>
-        <span>AI-era ready</span>
-      </div>
-      <div class="flex items-center gap-x-2">
-        <i class="fa-solid fa-check text-emerald-400"></i>
-        <span>Category-defining</span>
-      </div>
+    <div class="fade-up-delay-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 mb-8">
+      <a href={ACQUISITION_MAILTO} class="btn-accent text-base sm:text-lg px-8" data-cta="buy-now">
+        Buy Now
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href={OFFER_MAILTO} class="btn-primary text-base sm:text-lg" data-cta="make-offer">Make Offer</a>
+      <a href={AGENT_MAILTO} class="btn-secondary text-base sm:text-lg" data-cta="contact-agent">Contact Agent</a>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-zinc-400">
+      <span class="inline-flex items-center gap-2"><span class="text-[var(--color-accent)]">✓</span> Instant brand recognition</span>
+      <span class="inline-flex items-center gap-2"><span class="text-[var(--color-accent)]">✓</span> Escrow.com ready</span>
+      <span class="inline-flex items-center gap-2"><span class="text-[var(--color-accent)]">✓</span> SSL + secure transfer</span>
     </div>
   </div>
 </section>
+
+<script>
+  async function refreshViewers() {
+    try {
+      const res = await fetch('/api/view');
+      if (!res.ok) return;
+      const data = await res.json();
+      const el = document.getElementById('viewer-count');
+      if (el && data.viewers) {
+        el.textContent = `${data.viewers} people viewing this listing · Escrow protected`;
+      }
+    } catch {
+      // Local static preview may not hit the Worker; keep fallback copy.
+    }
+  }
+  refreshViewers();
+</script>

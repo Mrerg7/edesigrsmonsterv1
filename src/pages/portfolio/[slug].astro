@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { PORTFOLIO, formatPrice, getDomainBySlug, similarDomains } from '../../data/domains';
+import { acquisitionMailto, SITE } from '../../config/site';
+
+export function getStaticPaths() {
+  return PORTFOLIO.map((domain) => ({ params: { slug: domain.slug } }));
+}
+
+const { slug } = Astro.params;
+const domain = getDomainBySlug(slug!);
+if (!domain) {
+  return Astro.redirect('/portfolio/');
+}
+
+const fullName = `${domain.name}${domain.tld}`;
+const title = `${fullName} | Premium Domain for Sale | ${SITE.brand}`;
+const description = `${fullName} for sale at ${formatPrice(domain.price)}. ${domain.blurb} Escrow-protected acquisition via the eDesigrs domain marketplace.`;
+const buy = acquisitionMailto(`Buy ${fullName}`);
+const offer = acquisitionMailto(`Offer on ${fullName}`);
+const similar = similarDomains(domain.slug);
+---
+
+<BaseLayout title={title} description={description} ogType="product">
+  <Nav />
+  <main class="pt-24 pb-16">
+    <article class="max-w-4xl mx-auto px-4 sm:px-6">
+      <p class="text-sm text-zinc-500 mb-4">
+        <a href="/portfolio/" class="hover:text-white">Marketplace</a>
+        <span aria-hidden="true"> / </span>
+        <span>{fullName}</span>
+      </p>
+
+      <h1 class="font-display text-4xl sm:text-5xl tracking-tight mb-3">
+        {domain.name}<span class="monster-text">{domain.tld}</span>
+      </h1>
+      <p class="text-zinc-400 text-lg mb-6">{domain.blurb}</p>
+
+      <div class="flex flex-wrap items-end gap-6 mb-8">
+        <div>
+          <p class="text-xs uppercase tracking-[0.16em] text-zinc-500 mb-1">Price</p>
+          <p class="font-display text-4xl text-white">{formatPrice(domain.price)}</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.16em] text-zinc-500 mb-1">Category</p>
+          <p class="text-white capitalize">{domain.category}</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.16em] text-zinc-500 mb-1">Length</p>
+          <p class="text-white">{domain.length} characters</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-[0.16em] text-zinc-500 mb-1">Status</p>
+          <p class="text-emerald-400 capitalize">{domain.status}</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 mb-12">
+        {domain.price >= 75000 ? (
+          <>
+            <a href={buy} class="btn-accent">Buy Now</a>
+            <a href={offer} class="btn-primary">Make Offer</a>
+            <a href={acquisitionMailto('Contact Agent')} class="btn-secondary">Contact Agent</a>
+          </>
+        ) : domain.price >= 25000 ? (
+          <>
+            <a href={buy} class="btn-accent">Buy Now</a>
+            <a href={offer} class="btn-secondary">Make Offer</a>
+          </>
+        ) : (
+          <a href={buy} class="btn-accent">Buy Now</a>
+        )}
+      </div>
+
+      <h2 class="font-display text-2xl tracking-tight mb-4">Similar domains</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        {similar.map((item) => (
+          <a href={`/portfolio/${item.slug}/`} class="hover-lift border border-white/10 rounded-2xl p-4 bg-white/[0.02] block">
+            <p class="font-display text-xl text-white">{item.name}{item.tld}</p>
+            <p class="text-sm text-[var(--color-accent)] mt-1">{formatPrice(item.price)}</p>
+          </a>
+        ))}
+      </div>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>

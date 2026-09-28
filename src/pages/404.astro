@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Page not found | eDesigrs.monster" description="The page you requested is not available." noindex={true}>
+  <Nav />
+  <main class="pt-32 pb-24 px-4 text-center">
+    <h1 class="font-display text-5xl tracking-tight mb-4">404</h1>
+    <p class="text-zinc-400 mb-8">That page is not listed in the marketplace.</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="/" class="btn-primary">Back to eDesigrs.monster</a>
+      <a href="/portfolio/" class="btn-secondary">Browse marketplace</a>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

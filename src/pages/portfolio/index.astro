@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { PORTFOLIO, formatPrice } from '../../data/domains';
+import { SITE } from '../../config/site';
+
+const title = `Domain Marketplace | Premium Domains for Sale | ${SITE.brand}`;
+const description =
+  'Browse premium domain names by price, TLD, length, and category. Buy .monster domains, brandables, investment domains, and AI-ready names from the eDesigrs marketplace.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+  <main class="pt-24 pb-16">
+    <section class="max-w-6xl mx-auto px-4 sm:px-6">
+      <h1 class="font-display text-4xl sm:text-5xl tracking-tight mb-3">Domain marketplace</h1>
+      <p class="text-zinc-400 text-lg max-w-2xl mb-8">
+        Filter premium domain names by price, TLD, length, and category. Featured listing: <a href="/" class="text-[var(--color-accent)] hover:underline">eDesigrs.monster</a>.
+      </p>
+
+      <form id="filters" class="grid md:grid-cols-5 gap-3 mb-8" role="search">
+        <label class="md:col-span-2">
+          <span class="sr-only">Search keywords</span>
+          <input
+            id="q"
+            name="q"
+            type="search"
+            placeholder="Search keywords…"
+            class="w-full min-h-12 rounded-2xl border border-white/15 bg-white/5 px-4 text-base"
+          />
+        </label>
+        <label>
+          <span class="sr-only">Category</span>
+          <select id="category" class="w-full min-h-12 rounded-2xl border border-white/15 bg-zinc-950 px-4 text-base">
+            <option value="">All categories</option>
+            <option value="ai">AI</option>
+            <option value="business">Business</option>
+            <option value="brandable">Brandable</option>
+            <option value="crypto">Crypto</option>
+            <option value="geo">Geo</option>
+          </select>
+        </label>
+        <label>
+          <span class="sr-only">Max price</span>
+          <select id="price" class="w-full min-h-12 rounded-2xl border border-white/15 bg-zinc-950 px-4 text-base">
+            <option value="">Any price</option>
+            <option value="25000">Under $25k</option>
+            <option value="50000">Under $50k</option>
+            <option value="75000">Under $75k</option>
+            <option value="150000">Under $150k</option>
+          </select>
+        </label>
+        <label>
+          <span class="sr-only">Max length</span>
+          <select id="length" class="w-full min-h-12 rounded-2xl border border-white/15 bg-zinc-950 px-4 text-base">
+            <option value="">Any length</option>
+            <option value="8">≤ 8 chars</option>
+            <option value="10">≤ 10 chars</option>
+            <option value="12">≤ 12 chars</option>
+          </select>
+        </label>
+      </form>
+
+      <p id="result-count" class="text-sm text-zinc-500 mb-4" aria-live="polite"></p>
+
+      <div id="domain-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {PORTFOLIO.map((domain) => (
+          <article
+            class="domain-card hover-lift border border-white/10 rounded-2xl p-5 bg-white/[0.02]"
+            data-name={`${domain.name}${domain.tld}`.toLowerCase()}
+            data-category={domain.category}
+            data-price={domain.price}
+            data-length={domain.length}
+            data-keywords={domain.keywords.join(' ')}
+          >
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <h2 class="font-display text-2xl tracking-tight text-white">
+                <a href={`/portfolio/${domain.slug}/`} class="hover:text-[var(--color-accent)] transition-colors">
+                  {domain.name}<span class="text-zinc-500">{domain.tld}</span>
+                </a>
+              </h2>
+              <span class="text-[10px] uppercase tracking-wider px-2 py-1 rounded-full border border-white/15 text-zinc-400">{domain.category}</span>
+            </div>
+            <p class="text-sm text-zinc-400 mb-4 min-h-10">{domain.blurb}</p>
+            <div class="flex items-center justify-between gap-3">
+              <p class="font-semibold text-[var(--color-accent)]">{formatPrice(domain.price)}</p>
+              <a href={`/portfolio/${domain.slug}/`} class="btn-secondary text-sm px-4 min-h-12">View</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p id="empty-state" class="hidden text-zinc-400 py-12 text-center">No domains match those filters. Reset filters to see the full portfolio.</p>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  const q = document.getElementById('q') as HTMLInputElement | null;
+  const category = document.getElementById('category') as HTMLSelectElement | null;
+  const price = document.getElementById('price') as HTMLSelectElement | null;
+  const length = document.getElementById('length') as HTMLSelectElement | null;
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('.domain-card'));
+  const empty = document.getElementById('empty-state');
+  const count = document.getElementById('result-count');
+
+  function applyFilters() {
+    const query = (q?.value || '').trim().toLowerCase();
+    const cat = category?.value || '';
+    const maxPrice = Number(price?.value || 0);
+    const maxLength = Number(length?.value || 0);
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const hay = `${card.dataset.name} ${card.dataset.keywords}`;
+      const matchesQuery = !query || hay.includes(query);
+      const matchesCat = !cat || card.dataset.category === cat;
+      const matchesPrice = !maxPrice || Number(card.dataset.price) <= maxPrice;
+      const matchesLength = !maxLength || Number(card.dataset.length) <= maxLength;
+      const show = matchesQuery && matchesCat && matchesPrice && matchesLength;
+      card.classList.toggle('hidden', !show);
+      if (show) visible += 1;
+    });
+
+    empty?.classList.toggle('hidden', visible !== 0);
+    if (count) count.textContent = `${visible} domain${visible === 1 ? '' : 's'} shown`;
+  }
+
+  [q, category, price, length].forEach((el) => el?.addEventListener('input', applyFilters));
+  applyFilters();
+
+  // Hydrate from URL params for internal linking / SearchAction
+  const params = new URLSearchParams(window.location.search);
+  if (q && params.get('q')) {
+    q.value = params.get('q') || '';
+    applyFilters();
+  }
+</script>

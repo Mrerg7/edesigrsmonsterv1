@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site';
+
+const title = `Changelog | ${SITE.brand}`;
+const description = 'Documented optimization and deployment changes for the eDesigrs.monster domain sales site.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Nav />
+  <main class="pt-24 pb-16">
+    <section class="max-w-3xl mx-auto px-4 sm:px-6">
+      <h1 class="font-display text-4xl tracking-tight mb-6">Changelog</h1>
+      <article class="border border-white/10 rounded-2xl p-6 bg-white/[0.02]">
+        <h2 class="font-semibold text-xl mb-2">2026-09-28 — FEAT: Optimization improvements</h2>
+        <ul class="list-disc pl-5 space-y-2 text-zinc-400 text-sm">
+          <li>Rebuilt on Astro static + Cloudflare Worker (free plan) with security headers and HTTPS canonicalization</li>
+          <li>Added Schema.org Product/Organization/WebSite graph, sitemap, robots.txt, and canonical tags</li>
+          <li>CRO: above-the-fold price, Buy Now / Make Offer / Contact Agent CTAs, trust bar, social proof, exit-intent capture</li>
+          <li>Marketplace portfolio with search filters, blog guides for DA content, dark/light mode, mobile nav</li>
+          <li>Performance: self-hosted iconography (no Font Awesome CDN), font preconnect, lazy viewer API</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

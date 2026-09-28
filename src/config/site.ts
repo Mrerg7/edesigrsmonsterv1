@@ -1,13 +1,20 @@
 export const SITE = {
   name: 'eDesigrs.monster',
-  title: 'eDesigrs.monster • Premium Domain for Sale | Electronic Designers & AI Creatives',
+  brand: 'eDesigrs',
+  tld: '.monster',
+  title: 'eDesigrs.monster | Premium Domain for Sale | eDesigrs',
   description:
-    'eDesigrs.monster — The definitive premium domain for electronic designers, generative artists, AI art platforms, and creative studios using AI for art and copy. Strategic acquisition available.',
+    'Buy eDesigrs.monster — premium .monster domain for sale at $125,000. Escrow-protected marketplace listing for electronic designers, generative artists, and AI creative studios. Make an offer or buy now.',
   url: 'https://edesigrs.monster',
   email: 'sales@desertrich.com',
   locale: 'en_US',
-  location: 'Arizona',
+  location: 'Phoenix, AZ',
+  price: 125000,
+  priceDisplay: '$125,000',
+  currency: 'USD',
   googleSiteVerification: 'zy9vP-Yd7va2ltlIS1wiP26T5J35LKvYzrWq_cWKeso',
+  publishedDate: '2026-06-08',
+  modifiedDate: '2026-09-28',
 } as const;
 
 export const CF_IMAGES = {
@@ -21,4 +28,13 @@ export function cfImageUrl(imageId: string, variant = 'public'): string {
 
 export const OG_IMAGE = cfImageUrl(CF_IMAGES.heroImageId);
 
-export const ACQUISITION_MAILTO = `mailto:${SITE.email}?subject=${encodeURIComponent('eDesigrs.monster Domain Acquisition Inquiry')}&body=${encodeURIComponent('Hello,\n\nI am interested in acquiring eDesigrs.monster.\n\nIntended use:\nBudget range:\n\nThank you.')}`;
+export function acquisitionMailto(subjectExtra = ''): string {
+  const subject = `eDesigrs.monster Domain Acquisition Inquiry${subjectExtra ? ` — ${subjectExtra}` : ''}`;
+  const body =
+    'Hello,\n\nI am interested in acquiring eDesigrs.monster.\n\nIntended use:\nBudget range:\nPreferred CTA: Buy Now / Make Offer / Contact Agent\n\nThank you.';
+  return `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+export const ACQUISITION_MAILTO = acquisitionMailto();
+export const OFFER_MAILTO = acquisitionMailto('Make Offer');
+export const AGENT_MAILTO = acquisitionMailto('Contact Agent');

@@ -1,69 +1,45 @@
 ---
-import { ACQUISITION_MAILTO, SITE } from '../config/site';
+import { ACQUISITION_MAILTO, OFFER_MAILTO, AGENT_MAILTO, SITE } from '../config/site';
 ---
 
-<section id="acquire" class="max-w-4xl mx-auto px-6 pb-20">
-  <div class="bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden">
-    <div class="px-8 md:px-12 pt-10 pb-8">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-4">
-        <div>
-          <div class="text-xs font-bold tracking-[2px] text-emerald-400 mb-1.5">PREMIUM ACQUISITION</div>
-          <div class="font-display text-4xl sm:text-5xl md:text-7xl tracking-[-3.5px] font-bold">$125,000</div>
-          <div class="text-zinc-400 mt-1">USD • One-time acquisition</div>
-        </div>
+<section id="acquire" class="max-w-4xl mx-auto px-4 sm:px-6 pb-20">
+  <div class="border border-white/10 rounded-3xl overflow-hidden bg-gradient-to-br from-zinc-900 via-[var(--color-ink)] to-zinc-950">
+    <div class="px-6 sm:px-10 py-10">
+      <p class="text-xs uppercase tracking-[0.2em] text-[var(--color-accent)] font-bold mb-3">Acquire this asset</p>
+      <h2 class="font-display text-3xl sm:text-4xl tracking-tight mb-3 text-white">
+        {SITE.name} — {SITE.priceDisplay}
+      </h2>
+      <p class="text-zinc-400 max-w-2xl mb-6">
+        Instant buy for qualified buyers, flexible offers for strategic acquisitions, or speak with the listing agent. All paths use escrow-backed transfer.
+      </p>
 
-        <div class="md:text-right">
-          <div class="inline-flex items-center gap-x-2 text-sm bg-emerald-400/10 text-emerald-400 px-4 h-9 rounded-2xl font-medium">
-            <i class="fa-solid fa-shield-halved"></i>
-            <span>Escrow protected</span>
-          </div>
+      <div class="flex flex-wrap gap-3 mb-8">
+        <span class="inline-flex items-center gap-2 min-h-9 px-4 rounded-2xl bg-emerald-400/10 text-emerald-300 text-sm font-medium">Escrow protected</span>
+        <span class="inline-flex items-center gap-2 min-h-9 px-4 rounded-2xl bg-white/5 text-zinc-300 text-sm font-medium">Limited premium inventory</span>
+        <span class="inline-flex items-center gap-2 min-h-9 px-4 rounded-2xl bg-white/5 text-zinc-300 text-sm font-medium">Response within 24h</span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4 text-sm mb-8">
+        <div>
+          <p class="font-semibold text-white mb-1">Secure transfer</p>
+          <p class="text-zinc-400">Escrow.com, Dan.com, or your preferred provider with full seller support.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-white mb-1">Fast &amp; private</p>
+          <p class="text-zinc-400">Typical closing in 3–10 business days. Discreet deals welcome.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-white mb-1">Investment grade</p>
+          <p class="text-zinc-400">Semantic strength plus category growth for long-term equity.</p>
         </div>
       </div>
-    </div>
 
-    <div class="border-t border-white/10 px-8 md:px-12 py-8 bg-zinc-950/70">
-      <div class="grid md:grid-cols-3 gap-6 text-sm">
-        <div>
-          <div class="font-semibold mb-1.5 flex items-center gap-x-2">
-            <i class="fa-solid fa-handshake text-emerald-400"></i>
-            <span>Secure Transfer</span>
-          </div>
-          <div class="text-zinc-400">Handled via Escrow.com, Dan.com, or your preferred provider. Full support throughout the process.</div>
-        </div>
-        <div>
-          <div class="font-semibold mb-1.5 flex items-center gap-x-2">
-            <i class="fa-solid fa-clock text-emerald-400"></i>
-            <span>Fast &amp; Private</span>
-          </div>
-          <div class="text-zinc-400">Typical closing in 3–10 business days. Discreet transaction available for qualified buyers.</div>
-        </div>
-        <div>
-          <div class="font-semibold mb-1.5 flex items-center gap-x-2">
-            <i class="fa-solid fa-chart-line text-emerald-400"></i>
-            <span>Investment Grade</span>
-          </div>
-          <div class="text-zinc-400">Strong semantic value + explosive category growth = long-term digital equity appreciation.</div>
-        </div>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a href={ACQUISITION_MAILTO} class="btn-accent flex-1" data-cta="acquire-buy">Buy Now</a>
+        <a href={OFFER_MAILTO} class="btn-primary flex-1" data-cta="acquire-offer">Make Offer</a>
+        <a href={AGENT_MAILTO} class="btn-secondary flex-1" data-cta="acquire-agent">Contact Agent</a>
       </div>
-    </div>
-
-    <div class="px-8 md:px-12 py-8 border-t border-white/10 flex flex-col sm:flex-row gap-4">
-      <a
-        href={ACQUISITION_MAILTO}
-        class="flex-1 inline-flex items-center justify-center gap-x-3 h-14 rounded-2xl bg-white text-zinc-950 font-semibold text-lg hover:bg-zinc-100 active:scale-[0.985] transition-all"
-      >
-        <span>Begin Acquisition</span>
-        <i class="fa-solid fa-arrow-right"></i>
-      </a>
-      <a
-        href={ACQUISITION_MAILTO}
-        class="flex-1 sm:flex-none inline-flex items-center justify-center gap-x-3 h-14 px-8 rounded-2xl border border-white/20 font-medium hover:bg-white/5 transition-all"
-      >
-        <i class="fa-solid fa-envelope"></i>
-        <span>Speak with Seller</span>
-      </a>
     </div>
   </div>
-
   <p class="text-center text-xs text-zinc-500 mt-5 tracking-wide">Serious inquiries only. This is a high-value strategic asset.</p>
 </section>

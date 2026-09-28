@@ -1,71 +1,136 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@600;700;800&display=swap');
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", "DM Sans", ui-sans-serif, sans-serif;
+  --color-ink: #0b0d10;
+  --color-ink-soft: #12161c;
+  --color-mist: #e8edf2;
+  --color-fog: #9aa7b5;
+  --color-accent: #1ec8c8;
+  --color-accent-deep: #0e9e9e;
+  --color-signal: #c8f542;
+}
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-zinc-950 text-zinc-200 overflow-x-hidden font-sans antialiased;
+    @apply bg-[var(--color-ink)] text-zinc-200 antialiased overflow-x-hidden font-sans text-base;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 200, 200, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 0%, rgba(200, 245, 66, 0.05), transparent);
+    min-height: 100vh;
+  }
+
+  body.light {
+    @apply bg-[var(--color-mist)] text-zinc-800;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(14, 158, 158, 0.14), transparent),
+      linear-gradient(180deg, #eef3f7 0%, #e4ebf2 100%);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
   }
 }
 
 @layer components {
   .font-display {
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
-    font-weight: 600;
-  }
-
-  .monster-gradient {
-    background: linear-gradient(135deg, #00f0ff 0%, #a855f7 50%, #ec4899 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
   }
 
   .monster-text {
-    background: linear-gradient(to right, #00f0ff, #c026d3);
+    background: linear-gradient(120deg, #1ec8c8 0%, #7ee8e8 45%, #c8f542 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  .domain-hero {
-    font-size: 4.5rem;
-    line-height: 1;
-    font-weight: 800;
-    letter-spacing: -0.06em;
-  }
-
-  .section-header {
-    font-size: 2.75rem;
-    line-height: 1.1;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-  }
-
-  .premium-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .premium-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  }
-
-  .nav-scrolled {
-    background-color: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(12px);
-  }
-
-  .ai-glow {
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+    color: transparent;
   }
 
   .creative-grid {
     background-image:
-      linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
+      linear-gradient(rgba(30, 200, 200, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30, 200, 200, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .glass {
+    background: rgba(12, 16, 22, 0.72);
+    backdrop-filter: blur(18px);
+  }
+
+  body.light .glass {
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-2xl bg-white text-zinc-950 font-semibold transition-all hover:bg-zinc-100 active:scale-[0.985];
+  }
+
+  body.light .btn-primary {
+    @apply bg-zinc-900 text-white hover:bg-zinc-800;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-2xl border border-white/20 font-medium transition-all hover:bg-white/5;
+  }
+
+  body.light .btn-secondary {
+    @apply border-zinc-300 hover:bg-zinc-900/5;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 min-h-12 px-6 rounded-2xl font-semibold text-zinc-950 transition-all active:scale-[0.985];
+    background: linear-gradient(120deg, var(--color-accent), #7ee8e8 55%, var(--color-signal));
+  }
+
+  .fade-up {
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .fade-up-delay {
+    animation: fadeUp 0.8s ease 0.12s both;
+  }
+
+  .fade-up-delay-2 {
+    animation: fadeUp 0.85s ease 0.22s both;
+  }
+
+  .hover-lift {
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .fade-up-delay,
+  .fade-up-delay-2 {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

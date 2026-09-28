@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import { BLOG_POSTS, getPost } from '../../data/blog';
+import { SITE } from '../../config/site';
+
+export function getStaticPaths() {
+  return BLOG_POSTS.map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = getPost(slug!);
+if (!post) {
+  return Astro.redirect('/blog/');
+}
+
+const title = `${post.title} | ${SITE.brand}`;
+---
+
+<BaseLayout title={title} description={post.description} ogType="article">
+  <Nav />
+  <main class="pt-24 pb-16">
+    <article class="max-w-3xl mx-auto px-4 sm:px-6">
+      <p class="text-sm text-zinc-500 mb-4">
+        <a href="/blog/" class="hover:text-white">Guides</a>
+        <span aria-hidden="true"> / </span>
+        <span>{post.date}</span>
+      </p>
+      <h1 class="font-display text-4xl sm:text-5xl tracking-tight mb-4">{post.title}</h1>
+      <p class="text-zinc-400 text-lg mb-8">{post.description}</p>
+      <div class="space-y-5 text-zinc-300 leading-relaxed text-[17px]">
+        {post.body.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+      <p class="mt-10 text-sm text-zinc-500">
+        Ready to buy? View <a href="/" class="text-[var(--color-accent)] hover:underline">eDesigrs.monster</a>
+        or browse the <a href="/portfolio/" class="text-[var(--color-accent)] hover:underline">marketplace</a>.
+      </p>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
